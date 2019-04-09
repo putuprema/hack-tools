@@ -6,7 +6,7 @@ SUDO=sudo
 #SUDO=nothing
 
 # certain kexts are exceptions to automatic installation
-STANDARD_EXCEPTIONS="Sensors|FakePCIID|BrcmPatchRAM|BrcNonPatchRAM|BrcmBluetoothInjector|BrcmFirmwareData|IntelBacklight|AppleBacklightFixup.kext|WhateverName"
+STANDARD_EXCEPTIONS="Sensors|FakePCIID|BrcmPatchRAM|BrcNonPatchRAM|BrcmBluetoothInjector|BrcmFirmwareData|IntelBacklight|VoodooI2C|AppleBacklightFixup.kext|WhateverName"
 if [[ "$EXCEPTIONS" == "" ]]; then
     EXCEPTIONS="$STANDARD_EXCEPTIONS"
 else
@@ -217,6 +217,12 @@ function install_brcmpatchram_kexts
     # this guide does not use BrcmBluetoothInjector.kext/BrcmFirmwareData.kext
     remove_kext BrcmBluetoothInjector.kext
     remove_kext BrcmFirmwareData.kext
+}
+
+function install_voodooi2c_precisiontp
+{
+  install_kext _downloads/kexts/alexandred-VoodooI2C/VoodooI2C.kext
+  install_kext _downloads/kexts/alexandred-VoodooI2C/VoodooI2CHID.kext
 }
 
 function install_atheros_e2200
