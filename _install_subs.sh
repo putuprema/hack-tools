@@ -123,6 +123,17 @@ function install
         done
         installed=1
     fi
+    check_directory $out/Kexts/*.kext
+    if [ $? -ne 0 ]; then
+        for kext in $out/Kexts/*.kext; do
+            # install the kext when it exists regardless of filter
+            kextname="`basename $kext`"
+            if [[ -e "$SLE/$kextname" || -e "$KEXTDEST/$kextname" || "$2" == "" || "`echo $kextname | grep -vE "$2"`" != "" ]]; then
+                install_kext $kext
+            fi
+        done
+        installed=1
+    fi
     check_directory $out/Release/*.app
     if [ $? -ne 0 ]; then
         for app in $out/Release/*.app; do
@@ -206,6 +217,11 @@ function install_brcmpatchram_kexts
     # this guide does not use BrcmBluetoothInjector.kext/BrcmFirmwareData.kext
     remove_kext BrcmBluetoothInjector.kext
     remove_kext BrcmFirmwareData.kext
+}
+
+function install_atheros_e2200
+{
+  install_kext _downloads/kexts/Mieze-AtherosE2200Ethernet/AtherosE2200Ethernet*/Release/AtherosE2200Ethernet.kext
 }
 
 function install_fakepciid_intel_hdmi_audio
